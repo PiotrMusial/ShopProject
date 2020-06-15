@@ -1,5 +1,7 @@
 package com.project.shop.Entities;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +19,11 @@ public class Cart {
     @JoinColumn(name = "cart_user_id")
     private User user;
 
-
+    @ElementCollection
+    @CollectionTable(name="cart_products",
+            joinColumns={@JoinColumn(name="cart_id")})
+    @MapKeyJoinColumn(name="products_id")
+//    @JsonDeserialize(keyUsing = )
     private Map<Product, Integer> products;
 
     public Cart() {}

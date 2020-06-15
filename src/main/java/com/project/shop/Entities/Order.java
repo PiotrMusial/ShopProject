@@ -13,13 +13,9 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-//    @OneToOne
-//    @JoinColumn(name = "order_cart_id")
-//    private Cart cart;
-
+    @OneToOne
     @JoinColumn(name = "order_cart_id")
     private Cart cart;
-
 
     @Column(name = "order_delivery_address", nullable = false)
     private String delivery_address;
