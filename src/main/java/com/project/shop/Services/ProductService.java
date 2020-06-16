@@ -16,6 +16,10 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
+    }
+
     public List<Product> findAll() {
         return (List<Product>) productRepository.findAll();
     }
@@ -28,7 +32,7 @@ public class ProductService {
         return productRepository.findByCategory(name);
     }
 
-    public List<Product> findByName(String name) {
+    public Optional<Product> findByName(String name) {
         return productRepository.findByName(name);
     }
 
