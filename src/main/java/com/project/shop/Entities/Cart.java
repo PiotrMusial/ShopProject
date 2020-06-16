@@ -1,7 +1,5 @@
 package com.project.shop.Entities;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +25,10 @@ public class Cart {
     private Map<Product, Integer> products;
 
     public Cart() {}
+
+//    public Cart(User user) {
+//        this.user = user;
+//    }
 
     public Long getId() {
         return id;

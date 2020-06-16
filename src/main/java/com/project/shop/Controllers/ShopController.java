@@ -1,8 +1,10 @@
 package com.project.shop.Controllers;
 
+import com.project.shop.Entities.Cart;
 import com.project.shop.Entities.Product;
 import com.project.shop.Entities.ProductCategory;
 import com.project.shop.Entities.User;
+import com.project.shop.Services.CartService;
 import com.project.shop.Services.ProductCategoryService;
 import com.project.shop.Services.ProductService;
 import com.project.shop.Services.UserService;
@@ -75,5 +77,20 @@ public class ShopController {
     public ResponseEntity<Optional<Product>> getByName(@PathVariable String name) {
         return ResponseEntity.ok(productService.findByName(name));
     }
+
+    @Autowired
+    private CartService cartService;
+
+    @PostMapping("/carts/add")
+    public Cart addCart(@RequestBody Cart cart) {return cartService.createCart(cart); }
+
+    @GetMapping(value = "/carts/all", produces = "application/json")
+    public ResponseEntity<List<Cart>> getAllCarts() {return ResponseEntity.ok(cartService.findAll()); }
+
+    @GetMapping(value = "carts/byId/{id}", produces = "application/json")
+    public ResponseEntity<Optional<Cart>> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(cartService.findById(id));
+    }
+
 
 }
