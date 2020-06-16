@@ -13,7 +13,7 @@ public class ProductCategory {
     @Column(name = "pro_cat_id")
     private Long id;
 
-    @Column(name = "pro_cat_name", nullable = false)
+    @Column(name = "pro_cat_name", nullable = false, unique = true)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "productCategory", cascade = CascadeType.ALL)

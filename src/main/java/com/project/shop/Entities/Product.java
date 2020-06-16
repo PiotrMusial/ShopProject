@@ -23,7 +23,7 @@ public class Product {
     @Column(name = "pro_description", nullable = false)
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "pro_category_id", nullable = false)
     private ProductCategory productCategory;
 
