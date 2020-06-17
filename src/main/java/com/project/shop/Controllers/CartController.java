@@ -26,4 +26,19 @@ public class CartController {
     public ResponseEntity<Optional<Cart>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(cartService.findById(id));
     }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<?> deleteCart(@PathVariable Long id) {
+        Optional<Cart> cart = cartService.findById(id);
+
+        Boolean isDeleted = false;
+
+        if (cart.isPresent())
+            isDeleted = cartService.deleteCart(id);
+        if (isDeleted)
+            return ResponseEntity.ok(id);
+        return (ResponseEntity<?>) ResponseEntity.badRequest();
+
+        // tutaj nie wiem czy to jest na pewno ok
+    }
 }

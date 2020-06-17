@@ -1,7 +1,6 @@
 package com.project.shop.Services;
 
 import com.project.shop.Entities.Cart;
-import com.project.shop.Entities.Product;
 import com.project.shop.Repositories.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,6 +26,15 @@ public class CartService {
 
     public Optional<Cart> findById(Long id) {
         return cartRepository.findById(id);
+    }
+
+    public Boolean deleteCart(Long id) {
+        try {
+            cartRepository.deleteById(id);
+        } catch (Exception ex){
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
     }
 
 }

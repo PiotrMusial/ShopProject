@@ -3,6 +3,7 @@ package com.project.shop.Entities;
 import com.project.shop.Enums.OrderStatus;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Table(name = "orders")
