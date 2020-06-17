@@ -10,23 +10,23 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/shop")
+@RequestMapping("/shop/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/users/add", produces = "application/json")
+    @PostMapping(value = "/add", produces = "application/json")
     public User addUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
-    @GetMapping(value = "/users/all", produces = "application/json")
+    @GetMapping(value = "/all", produces = "application/json")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping(value = "/users/{userName}", produces = "application/json")
+    @GetMapping(value = "/{userName}", produces = "application/json")
     public ResponseEntity<Optional<User>> getUserByName(@PathVariable String userName) {
         return ResponseEntity.ok(userService.findByUserName(userName));
     }

@@ -10,28 +10,28 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/shop")
+@RequestMapping("/shop/products")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @PostMapping("/products/add")
+    @PostMapping("/add")
     public Product addProduct(@RequestBody Product product) {
         return productService.createProduct(product);
     }
 
-    @GetMapping(value = "/products/all", produces = "application/json")
+    @GetMapping(value = "/all", produces = "application/json")
     public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(productService.findAll());
     }
 
-    @GetMapping(value = "/products/byCategory/{name}", produces = "application/json")
+    @GetMapping(value = "/byCategory/{name}", produces = "application/json")
     public ResponseEntity<List<Product>> getByCategory(@PathVariable String name) {
         return ResponseEntity.ok(productService.findByCategory(name));
     }
 
-    @GetMapping(value = "/products/byName/{name}", produces = "application/json")
+    @GetMapping(value = "/byName/{name}", produces = "application/json")
     public ResponseEntity<Optional<Product>> getByName(@PathVariable String name) {
         return ResponseEntity.ok(productService.findByName(name));
     }
