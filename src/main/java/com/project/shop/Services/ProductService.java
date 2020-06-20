@@ -3,6 +3,8 @@ package com.project.shop.Services;
 import com.project.shop.Entities.Product;
 import com.project.shop.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +34,16 @@ public class ProductService {
         return productRepository.findByCategory(name);
     }
 
-    public Optional<Product> findByName(String name) {
-        return productRepository.findByName(name);
+    public Slice<Product> findByName(String name, Pageable pageable) {
+        return productRepository.findByNameContainingIgnoreCase(name, pageable);
     }
 
+    public Boolean deleteById(Long id) {
+        try {
+            productRepository.deleteById(id);
+        } catch (Exception ex){
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
+    }
 }

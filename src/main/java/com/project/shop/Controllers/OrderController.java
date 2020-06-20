@@ -52,7 +52,6 @@ public class OrderController {
                 return ResponseEntity.ok(id);
         return (ResponseEntity<?>) ResponseEntity.badRequest();
 
-        // tutaj nie wiem czy to jest na pewno ok
     }
 
 }

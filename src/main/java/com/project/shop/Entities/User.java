@@ -1,8 +1,6 @@
 package com.project.shop.Entities;
 
 import com.project.shop.Enums.UserStatus;
-import net.bytebuddy.implementation.bind.annotation.Default;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -20,7 +18,6 @@ public class User {
 
     @Column(name = "user_password", nullable = false)
     private String password;
-
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status", nullable = false)

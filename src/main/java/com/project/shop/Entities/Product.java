@@ -1,6 +1,10 @@
 package com.project.shop.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -27,14 +31,7 @@ public class Product {
     @JoinColumn(name = "pro_category_id", nullable = false)
     private ProductCategory productCategory;
 
-    public Product() {}
 
-    public Product(String name, Double price, Integer amount, String description) {
-        this.name = name;
-        this.price = price;
-        this.amount = amount;
-        this.description = description;
-    }
 
     public Long getId() {
         return id;
@@ -83,4 +80,5 @@ public class Product {
     public void setProductCategory(ProductCategory productCategory) {
         this.productCategory = productCategory;
     }
+
 }

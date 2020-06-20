@@ -21,11 +21,24 @@ public class ProductCategoryService {
         return productCategoryRepository.save(productCategory);
     }
 
+    public Optional<ProductCategory> findById(Long id) {
+        return productCategoryRepository.findById(id);
+    }
+
     public List<ProductCategory> findAll() {
         return (List<ProductCategory>) productCategoryRepository.findAll();
     }
 
     public Optional<ProductCategory> findByName(String name) {
         return productCategoryRepository.findCategoryByName(name);
+    }
+
+    public Boolean deleteProductCategory(Long id) {
+        try {
+            productCategoryRepository.deleteById(id);
+        } catch (Exception ex) {
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
     }
 }

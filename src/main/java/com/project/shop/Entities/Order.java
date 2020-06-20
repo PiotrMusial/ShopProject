@@ -1,5 +1,6 @@
 package com.project.shop.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.project.shop.Enums.OrderStatus;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Order {
 
     @OneToOne
     @JoinColumn(name = "order_cart_id")
+    @JsonBackReference
     private Cart cart;
 
     @Column(name = "order_delivery_address", nullable = false)

@@ -1,11 +1,14 @@
 package com.project.shop.Controllers;
 
 import com.project.shop.Entities.Cart;
+import com.project.shop.Entities.Product;
 import com.project.shop.Services.CartService;
+import com.project.shop.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +19,9 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private ProductService productService;
+
     @PostMapping("/add")
     public Cart addCart(@RequestBody Cart cart) {return cartService.createCart(cart); }
 
@@ -23,8 +29,17 @@ public class CartController {
     public ResponseEntity<List<Cart>> getAllCarts() {return ResponseEntity.ok(cartService.findAll()); }
 
     @GetMapping(value = "/byId/{id}", produces = "application/json")
-    public ResponseEntity<Optional<Cart>> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(cartService.findById(id));
+    public ResponseEntity<Cart> getById(@PathVariable Long id) {
+        Optional<Cart> cart = cartService.findById(id);
+        return ResponseEntity.ok(cart.get());
+    }
+
+    @PostMapping("/add/{productId}/{amount}")
+    public ResponseEntity<?> addCartItem(@PathVariable Long productId, @PathVariable Long amount, @RequestBody Cart cart) {
+        Optional<Product> product = productService.findById(productId);
+        cart.addProduct(product.get(), amount);
+        URI uri = URI.create("Product added to cart");
+        return (ResponseEntity<?>) ResponseEntity.created(uri);
     }
 
     @DeleteMapping(value = "/delete/{id}")
@@ -36,9 +51,9 @@ public class CartController {
         if (cart.isPresent())
             isDeleted = cartService.deleteCart(id);
         if (isDeleted)
-            return ResponseEntity.ok(id);
+            return ResponseEntity.ok("Deleted Cart, id: " + id);
         return (ResponseEntity<?>) ResponseEntity.badRequest();
 
-        // tutaj nie wiem czy to jest na pewno ok
+        // KS - tutaj nie wiem czy to jest na pewno ok
     }
 }

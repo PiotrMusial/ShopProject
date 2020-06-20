@@ -13,24 +13,18 @@ public class Cart {
     @Column(name = "cart_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(optional = false)
     @JoinColumn(name = "cart_user_id")
     private User user;
 
     @ElementCollection
-    @CollectionTable(name="cart_products",
-            joinColumns={@JoinColumn(name="cart_id")})
-    @MapKeyJoinColumn(name="products_id")
-//    @JsonDeserialize(keyUsing = )
-    private Map<Product, Integer> products;
+    @CollectionTable(name = "cart_product_mapping",
+            joinColumns = {@JoinColumn(name = "cart_id")})
+    @MapKeyJoinColumn(name = "product_id")
+    @Column(name = "cart_products")
+    private Map<Product, Long> products;
 
-    public Cart() {}
-
-//    public Cart(User user) {
-//        this.user = user;
-//    }
-
-    public Long getId() {
+        public Long getId() {
         return id;
     }
 
@@ -46,15 +40,22 @@ public class Cart {
         this.user = user;
     }
 
-    public void addProduct(Product product, Integer amount) {
+    public Map<Product, Long> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Map<Product, Long> products) {
+        this.products = products;
+    }
+
+    public void addProduct(Product product, Long amount) {
         if (this.products == null) {
             this.products = new HashMap<>();
-        } else if(this.products.containsKey(product)) {
+        } else if (this.products.containsKey(product)) {
             this.products.put(product, this.products.get(product) + amount);
         } else {
             this.products.put(product, amount);
         }
     }
-
 
 }
