@@ -70,11 +70,11 @@ public class ProductController {
         // KS - tutaj nie wiem czy to jest na pewno ok
     }
 
-    @PutMapping(value = "/update/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+    @PutMapping(value = "/update/{id}", produces = "application/json")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         Optional<Product> searchedProduct = productService.findById(id);
 
-        if(searchedProduct.isPresent()) {
+        if(!searchedProduct.isPresent()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
