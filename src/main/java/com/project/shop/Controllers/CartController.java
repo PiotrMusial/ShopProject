@@ -5,6 +5,7 @@ import com.project.shop.Entities.Product;
 import com.project.shop.Services.CartService;
 import com.project.shop.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class CartController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping("/add")
+    @PostMapping(value = "/add", produces = "application/json")
     public Cart addCart(@RequestBody Cart cart) {return cartService.createCart(cart); }
 
     @GetMapping(value = "/all", produces = "application/json")
@@ -30,17 +31,21 @@ public class CartController {
 
     @GetMapping(value = "/byId/{id}", produces = "application/json")
     public ResponseEntity<Cart> getById(@PathVariable Long id) {
+
         Optional<Cart> cart = cartService.findById(id);
-        return ResponseEntity.ok(cart.get());
+
+        if (cart.isPresent())
+            return ResponseEntity.ok(cart.get());
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/add/{productId}/{amount}")
-    public ResponseEntity<?> addCartItem(@PathVariable Long productId, @PathVariable Long amount, @RequestBody Cart cart) {
-        Optional<Product> product = productService.findById(productId);
-        cart.addProduct(product.get(), amount);
-        URI uri = URI.create("Product added to cart");
-        return (ResponseEntity<?>) ResponseEntity.created(uri);
-    }
+//    @PostMapping("/add/{idCarts}/{productId}/{amount}")
+//    public ResponseEntity<?> addCartItem(@PathVariable Long productId, @PathVariable Long amount, @RequestBody Cart cart) {
+//        Optional<Product> product = productService.findById(productId);
+//        cart.addProduct(product.get(), amount);
+//        URI uri = URI.create("Product added to cart");
+//        return (ResponseEntity<?>) ResponseEntity.created(uri);
+//    }
 
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<?> deleteCart(@PathVariable Long id) {

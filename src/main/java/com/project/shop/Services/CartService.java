@@ -28,6 +28,8 @@ public class CartService {
         return cartRepository.findById(id);
     }
 
+    public Optional<Cart> findByUserId(Long userId) {return cartRepository.findByUserId(userId);}
+
     public Boolean deleteCart(Long id) {
         try {
             cartRepository.deleteById(id);

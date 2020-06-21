@@ -46,4 +46,13 @@ public class ProductService {
         }
         return Boolean.TRUE;
     }
+
+    public Boolean updateProduct(Product product) {
+        try {
+            productRepository.save(product);
+        } catch (Exception ex){
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
+    }
 }

@@ -1,6 +1,6 @@
 package com.project.shop.Controllers;
 
-import com.project.shop.Entities.ProductCategory;
+
 import com.project.shop.Entities.User;
 import com.project.shop.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +28,23 @@ public class UserController {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping(value = "/{userName}", produces = "application/json")
+    @GetMapping(value = "/byUserName/{userName}", produces = "application/json")
     public ResponseEntity<Optional<User>> getUserByName(@PathVariable String userName) {
 
         Optional<User> user = userService.findByUserName(userName);
 
         if (user.isPresent())
             return new ResponseEntity<>(user, HttpStatus.OK);
+
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(value = "/byId/{id}", produces = "application/json")
+    public ResponseEntity<User> getById(@PathVariable Long id) {
+        Optional<User> user = userService.findById(id);
+
+        if(user.isPresent())
+            return ResponseEntity.ok(user.get());
 
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
@@ -53,8 +63,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody User user)
-    {
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
         Optional<User> searchedUser = userService.findById(id);
 
         if(!searchedUser.isPresent()) {

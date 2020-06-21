@@ -7,6 +7,7 @@ import com.project.shop.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +38,12 @@ public class ProductController {
 
     @GetMapping(value = "/byId/{id}", produces = "application/json")
     public ResponseEntity<Product> getById(@PathVariable Long id) {
+
         Optional<Product> product = productService.findById(id);
-        return ResponseEntity.ok(product.get());
+
+        if (product.isPresent())
+            return ResponseEntity.ok(product.get());
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/byName/{name}", produces = "application/json")
@@ -63,6 +68,31 @@ public class ProductController {
         return (ResponseEntity<?>) ResponseEntity.badRequest();
 
         // KS - tutaj nie wiem czy to jest na pewno ok
+    }
+
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+        Optional<Product> searchedProduct = productService.findById(id);
+
+        if(searchedProduct.isPresent()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        Product currentProduct = searchedProduct.get();
+
+        currentProduct.setName(product.getName());
+        currentProduct.setProductCategory(product.getProductCategory());
+        currentProduct.setDescription(product.getDescription());
+        currentProduct.setPrice(product.getPrice());
+        currentProduct.setAmount(product.getAmount());
+
+        Boolean isUpdated = productService.updateProduct(currentProduct);
+
+        if(isUpdated){
+            return new ResponseEntity<>(currentProduct, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
 
