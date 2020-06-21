@@ -41,4 +41,13 @@ public class ProductCategoryService {
         }
         return Boolean.TRUE;
     }
+
+    public Boolean updateProductCategory(ProductCategory productCategory) {
+        try {
+            productCategoryRepository.save(productCategory);
+        } catch (Exception ex){
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
+    }
 }
