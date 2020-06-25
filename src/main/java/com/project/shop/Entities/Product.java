@@ -1,8 +1,11 @@
 package com.project.shop.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -21,9 +24,6 @@ public class Product {
     @Column(name = "pro_price", nullable = false)
     private Double price;
 
-    @Column(name = "pro_amount", nullable = false)
-    private Integer amount;
-
     @Column(name = "pro_description", nullable = false)
     private String description;
 
@@ -31,7 +31,24 @@ public class Product {
     @JoinColumn(name = "pro_category_id", nullable = false)
     private ProductCategory productCategory;
 
+    @ManyToMany(mappedBy = "products",
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.DETACH
+            })
+    @JsonIgnore
+    private List<Cart> carts = new ArrayList<>();
 
+    public List<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(List<Cart> carts) {
+        this.carts = carts;
+    }
 
     public Long getId() {
         return id;
@@ -55,14 +72,6 @@ public class Product {
 
     public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
     }
 
     public String getDescription() {

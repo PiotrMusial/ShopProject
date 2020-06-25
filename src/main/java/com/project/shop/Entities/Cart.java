@@ -1,7 +1,12 @@
 package com.project.shop.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -17,14 +22,37 @@ public class Cart {
     @JoinColumn(name = "cart_user_id")
     private User user;
 
-    @ElementCollection
-    @CollectionTable(name = "cart_product_mapping",
-            joinColumns = {@JoinColumn(name = "cart_id")})
-    @MapKeyJoinColumn(name = "product_id")
-    @Column(name = "cart_products")
-    private Map<Product, Long> products;
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.DETACH
+    })
+    @JoinTable(name = "cart_product",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Product> products = new ArrayList<>();
 
-        public Long getId() {
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
+        product.getCarts().add(this);
+    }
+
+    public void removeProduct(Product product) {
+        this.products.remove(product);
+        product.getCarts().remove(this);
+    }
+
+    public Long getId() {
         return id;
     }
 
@@ -40,22 +68,5 @@ public class Cart {
         this.user = user;
     }
 
-    public Map<Product, Long> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Map<Product, Long> products) {
-        this.products = products;
-    }
-
-    public void addProduct(Product product, Long amount) {
-        if (this.products == null) {
-            this.products = new HashMap<>();
-        } else if (this.products.containsKey(product)) {
-            this.products.put(product, this.products.get(product) + amount);
-        } else {
-            this.products.put(product, amount);
-        }
-    }
 
 }

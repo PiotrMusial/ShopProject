@@ -67,7 +67,6 @@ public class ProductController {
             return ResponseEntity.ok("Deleted Product, id: " + id);
         return (ResponseEntity<?>) ResponseEntity.badRequest();
 
-        // KS - tutaj nie wiem czy to jest na pewno ok
     }
 
     @PutMapping(value = "/update/{id}", produces = "application/json")
@@ -84,7 +83,6 @@ public class ProductController {
         currentProduct.setProductCategory(product.getProductCategory());
         currentProduct.setDescription(product.getDescription());
         currentProduct.setPrice(product.getPrice());
-        currentProduct.setAmount(product.getAmount());
 
         Boolean isUpdated = productService.updateProduct(currentProduct);
 

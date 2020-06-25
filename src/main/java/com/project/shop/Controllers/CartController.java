@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,17 +34,44 @@ public class CartController {
         Optional<Cart> cart = cartService.findById(id);
 
         if (cart.isPresent())
-            return ResponseEntity.ok(cart.get());
+            return new ResponseEntity<>(cart.get(), HttpStatus.OK);
         return new ResponseEntity(HttpStatus.NOT_FOUND);
+
     }
 
-//    @PostMapping("/add/{idCarts}/{productId}/{amount}")
-//    public ResponseEntity<?> addCartItem(@PathVariable Long productId, @PathVariable Long amount, @RequestBody Cart cart) {
-//        Optional<Product> product = productService.findById(productId);
-//        cart.addProduct(product.get(), amount);
-//        URI uri = URI.create("Product added to cart");
-//        return (ResponseEntity<?>) ResponseEntity.created(uri);
-//    }
+    @PatchMapping("/addProductToCart/{cartId}/{productId}")
+    public ResponseEntity<Cart> addCartItem(@PathVariable Long cartId, @PathVariable Long productId) {
+
+        Optional<Product> product = productService.findById(productId);
+        Optional<Cart> cart = cartService.findById(cartId);
+
+        if (product.isPresent() && cart.isPresent()) {
+            cart.get().addProduct(product.get());
+            cartService.updateCart(cart.get());
+            productService.updateProduct(product.get());
+            return new ResponseEntity<>(cart.get(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PatchMapping("/removeProductFromCart/{cartId}/{productId}")
+    public ResponseEntity<Cart> removeCartItem(@PathVariable Long cartId, @PathVariable Long productId) {
+
+        Optional<Product> product = productService.findById(productId);
+        Optional<Cart> cart = cartService.findById(cartId);
+        List <Product> products = cart.get().getProducts();
+
+        if (product.isPresent() && cart.isPresent() && products.contains(product.get())) {
+            cart.get().removeProduct(product.get());
+            cartService.updateCart(cart.get());
+            productService.updateProduct(product.get());
+            return new ResponseEntity<>(cart.get(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<?> deleteCart(@PathVariable Long id) {
@@ -55,10 +81,9 @@ public class CartController {
 
         if (cart.isPresent())
             isDeleted = cartService.deleteCart(id);
+
         if (isDeleted)
             return ResponseEntity.ok("Deleted Cart, id: " + id);
         return (ResponseEntity<?>) ResponseEntity.badRequest();
-
-        // KS - tutaj nie wiem czy to jest na pewno ok
     }
 }

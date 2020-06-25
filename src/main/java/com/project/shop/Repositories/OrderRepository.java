@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
-    @Query("SELECT o FROM Order o JOIN Cart c ON c.id = o.id JOIN User u ON u.id = c.user WHERE u.userName = ?1")
+    @Query("SELECT o FROM Order o JOIN Cart c ON c.id = o.cart JOIN User u ON u.id = c.user WHERE u.userName = ?1")
     Optional<Order> findByUserName(String name);
 
     @Query("SELECT o FROM Order o WHERE o.orderStatus =?1")

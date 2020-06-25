@@ -16,8 +16,7 @@ public class Order {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "order_cart_id")
-    @JsonBackReference
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
     @Column(name = "order_delivery_address", nullable = false)
@@ -25,25 +24,13 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status", nullable = false)
-    private OrderStatus orderStatus;
-
-    @Column(name = "order_overall_price", nullable = false)
-    private Double price;
+    private OrderStatus orderStatus = OrderStatus.Accepted;
 
     @Column(name = "order_is_paid", nullable = false)
-    private Boolean isPaid;
+    private Boolean isPaid = false;
 
     @Column(name = "order_is_completed", nullable = false)
-    private Boolean isCompleted;
-
-
-    public Order(String delivery_address, OrderStatus orderStatus, Double price, Boolean isPaid, Boolean isCompleted) {
-        this.delivery_address = delivery_address;
-        this.orderStatus = orderStatus;
-        this.price = price;
-        this.isPaid = isPaid;
-        this.isCompleted = isCompleted;
-    }
+    private Boolean isCompleted = false;
 
     public Long getId() {
         return id;
@@ -75,14 +62,6 @@ public class Order {
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public Boolean getPaid() {

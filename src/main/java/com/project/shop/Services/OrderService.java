@@ -1,6 +1,7 @@
 package com.project.shop.Services;
 
 import com.project.shop.Entities.Order;
+import com.project.shop.Entities.User;
 import com.project.shop.Enums.OrderStatus;
 import com.project.shop.Repositories.CartRepository;
 import com.project.shop.Repositories.OrderRepository;
@@ -24,11 +25,6 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-//    public Order createOrder(Long cartId, Order order) {
-//        order.setCart(cartRepository.findById(cartId));
-//        return orderRepository.save(order);
-//    }
-
     public List<Order> findAll() {
         return (List<Order>) orderRepository.findAll();
     }
@@ -41,13 +37,24 @@ public class OrderService {
         return orderRepository.findByStatus(orderStatus);
     }
 
-    public Boolean deleteOrder(Long id) {
+    public Optional<Order> findByUserName(String userName) { return  orderRepository.findByUserName(userName); }
+
+    public Boolean updateOrder(Order order) {
         try {
-            orderRepository.deleteById(id);
+            orderRepository.save(order);
         } catch (Exception ex){
             return Boolean.FALSE;
         }
         return Boolean.TRUE;
     }
+
+//    public Boolean deleteOrder(Long id) {
+//        try {
+//            orderRepository.deleteById(id);
+//        } catch (Exception ex){
+//            return Boolean.FALSE;
+//        }
+//        return Boolean.TRUE;
+//    }
 
 }
