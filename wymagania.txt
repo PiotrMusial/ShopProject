@@ -1,0 +1,9 @@
+Ocena, którą chcemy uzyskać za projekt to 4.
+W projekcie zrealizowaliśmy następujące wymagania:
+- wykorzystanie Spring Framework (SpringBoot, Maven, Git)
+- repozytorium dostępne na githubie
+- około 30 endpointów (wykorzystane metody to POST, GET, DELETE, PUT, PATCH)
+- wygenerowane kolekcje za pomocą programu Postman dla każdego endpointa
+- 6 tabel w bazie danych
+- wykorzystanie DI oraz IoC
+- dokumnetacja wraz z diagramem tabel w bazie danych oraz diagramem przypadków użycia
